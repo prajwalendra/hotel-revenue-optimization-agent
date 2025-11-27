@@ -1,4 +1,9 @@
 
+// Type definitions for test runner globals to resolve TS errors
+declare const describe: (name: string, callback: () => void) => void;
+declare const test: (name: string, callback: () => void | Promise<void>) => void;
+declare const expect: (actual: any) => any;
+
 import { get_hotel_operating_data, get_market_demand_drivers } from '../../../apps/backend/src/mcp/tools';
 import { buildSystemInstruction, ROA_AGENT_CONFIG } from '../../../apps/backend/src/config/agentConfig';
 import { AgentTone } from '../../../shared/types';

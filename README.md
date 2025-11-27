@@ -36,3 +36,14 @@ This project is structured as a monorepo to support scalable cloud deployment.
 
 ## Local Development
 The `apiAdapter` in `apps/frontend/src/services/apiAdapter.ts` currently bridges the frontend directly to the backend logic for local demonstration. In production, update this adapter to `fetch` from your backend API URL.
+
+## Project Maintenance
+
+### Removing Legacy Files
+As the architecture evolves, some files may become redundant. A utility script is provided to clean up the project structure.
+
+To run the cleanup script (Local Node.js environment only):
+```bash
+node cleanup.js
+```
+*Note: This script uses the `fs` module and cannot be executed within a browser-based preview environment.*

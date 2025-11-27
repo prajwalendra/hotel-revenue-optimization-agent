@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { HotelCategory, HotelFormValues, OptimizationGoal, AgentTone } from '../../../../shared/types';
+import { validateHotelForm } from '../../../../shared/validation';
 
 interface Props {
   onSubmit: (values: HotelFormValues) => void;
@@ -24,46 +25,9 @@ const InputForm: React.FC<Props> = ({ onSubmit, isLoading }) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const validate = (): boolean => {
-    const newErrors: Partial<Record<keyof HotelFormValues, string>> = {};
-    let isValid = true;
-
-    if (!formData.hotelName.trim()) {
-      newErrors.hotelName = 'Hotel Name is required.';
-      isValid = false;
-    }
-
-    if (!formData.location.trim()) {
-      newErrors.location = 'Location is required.';
-      isValid = false;
-    }
-
-    if (isNaN(formData.currentAdr) || formData.currentAdr <= 0) {
-      newErrors.currentAdr = 'ADR must be a positive number greater than 0.';
-      isValid = false;
-    }
-
-    if (isNaN(formData.currentRevPar) || formData.currentRevPar <= 0) {
-      newErrors.currentRevPar = 'RevPAR must be a positive number greater than 0.';
-      isValid = false;
-    } else if (formData.currentRevPar > formData.currentAdr) {
-      // Logical validation: RevPAR cannot mathematically exceed ADR (RevPAR = ADR * Occupancy %)
-      // unless Occupancy > 100%, which is handled below.
-      newErrors.currentRevPar = 'RevPAR cannot exceed the Average Daily Rate (ADR).';
-      isValid = false;
-    }
-
-    if (isNaN(formData.currentOccupancy) || formData.currentOccupancy < 0 || formData.currentOccupancy > 100) {
-      newErrors.currentOccupancy = 'Occupancy must be between 0 and 100.';
-      isValid = false;
-    }
-
-    if (isNaN(formData.numberOfRooms) || formData.numberOfRooms <= 0 || !Number.isInteger(formData.numberOfRooms)) {
-      newErrors.numberOfRooms = 'Number of Rooms must be a positive integer.';
-      isValid = false;
-    }
-
+    const newErrors = validateHotelForm(formData);
     setErrors(newErrors);
-    return isValid;
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
