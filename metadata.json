@@ -1,0 +1,5 @@
+{
+  "name": "ROA - Hotel Revenue Optimization Agent",
+  "description": "An Agentic AI application for hotel revenue management using Gemini 3 and simulated MCP tools.",
+  "requestFramePermissions": []
+}

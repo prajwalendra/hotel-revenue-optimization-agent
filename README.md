@@ -1,11 +1,38 @@
-<div align="center">
+# ROA - Enterprise Hotel Revenue Optimization Agent
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+## Architecture Overview
 
-  <h1>Built with AI Studio</h2>
+This project is structured as a monorepo to support scalable cloud deployment.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+### Directory Structure
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+- **`apps/frontend`**: The React-based User Interface.
+  - Interacts with the backend via the `apiAdapter`.
+  - **Deployment**: Static hosting (e.g., AWS S3 + CloudFront, Vercel).
+  
+- **`apps/backend`**: The Agent Core & MCP Tools.
+  - Contains the Gemini 3 logic and Mock Tools.
+  - **Deployment**: Containerized service (e.g., AWS ECS, EKS, Google Cloud Run).
 
-</div>
+- **`shared`**: Shared TypeScript definitions (`types.ts`).
+  - Ensures type safety across the stack.
+
+- **`tests`**: Automated test suites.
+  - `tests/automation/ui`: Frontend smoke tests.
+  - `tests/automation/api`: Backend logic tests.
+
+## Deployment Guide
+
+### Frontend
+1. Build the frontend: `npm run build` (configured for the frontend app).
+2. Upload `dist/` to an S3 bucket.
+3. Configure CloudFront to serve the bucket.
+
+### Backend
+1. Wrap `apps/backend` in a Docker container (Node.js 20+).
+2. Expose the Agent entry point via an API (Express/FastAPI).
+3. Deploy to AWS ECS or EKS.
+4. Set `API_KEY` environment variable in the container.
+
+## Local Development
+The `apiAdapter` in `apps/frontend/src/services/apiAdapter.ts` currently bridges the frontend directly to the backend logic for local demonstration. In production, update this adapter to `fetch` from your backend API URL.
